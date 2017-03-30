@@ -4,9 +4,7 @@
 
 
 require('dotenv').config();
-var discord_secret = process.env.discord_secret
 
-console.log('is this thing on?  ' + discord_secret);
 // import the discord.js module
 const Discord = require('discord.js');
 
@@ -14,7 +12,8 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 // the token of your bot - https://discordapp.com/developers/applications/me
-const token = process.env.discord_secret;
+const token = process.env.bot_token;
+console.log('Hey there buddy.  You should see your bot token here: ' + token);
 
 // the ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted.
