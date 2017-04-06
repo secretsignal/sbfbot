@@ -5,6 +5,8 @@
 
 require('dotenv').config();
 
+var request = require('request');
+
 // import the discord.js module
 const Discord = require('discord.js');
 
@@ -13,21 +15,53 @@ const bot = new Discord.Client();
 
 // the token of your bot - https://discordapp.com/developers/applications/me
 const token = process.env.bot_token;
-console.log('Hey there buddy.  You should see your bot token here: ' + token);
+
+const sbfvgs_id = "216034888372060162";
+
+const hscard_url = "https://omgvamp-hearthstone-v1.p.mashape.com/cards/";
+const hscard_headers = { "X-Mashape-Key": process.env.mashape_hscard_token, "Accept": "application/json" };
+
+let emojis = {};
+
 
 // the ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted.
 bot.on('ready', () => {
-    console.log('I am ready!');
+    console.log('I am ready!---   ');
+    console.log("bot guild name by id is:  " + bot.guilds.get("216034888372060162").name);
+    console.log(bot.guilds.get(sbfvgs_id).emojis.first().identifier);
 });
 
 // create an event listener for messages
 bot.on('message', message => {
     // if the message is "ping",
-    if (message.content === 'ping') {
+    if (message.content === 'marco') {
         // send "pong" to the same channel.
-        message.channel.sendMessage('pong');
+        message.channel.sendMessage('polo');
+        //message.react(message.guild.emojis.random());
     }
+
+    if (message.content === "/randomEmoji") {
+        var emoji = bot.guilds.get(sbfvgs_id).emojis.first();
+        message.channel.sendMessage(message.guild.emojis.random().toString());
+    }
+
+    if (message.content.startsWith("/card")) {
+        var card = message.content.substr(6);
+        var opts = { url: hscard_url + card, headers: hscard_headers };
+        request(opts, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var info = JSON.parse(body);
+                console.log("found card: " + info[0].imgGold);
+                message.channel.sendMessage(info[0].imgGold);
+            }
+        });
+
+    }
+
+    //message.react(message.guild.emojis.random());
+
+
 });
 
 // log our bot in
