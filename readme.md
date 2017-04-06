@@ -5,7 +5,9 @@
 2. create your own discord bot and make it a bot user, and get a valid token.   Here's a guide: http://discord.kongslien.net/guide.html
 3. create a ```.env``` file at the root of your repo:
 file should have the following:  ``` bot_token=xxxxxxxxxxxxx ``` where xxxx is your bot's token.
-4. node bot
+4.  Add a mashape_hscard_token= xxxx  with your api token from https://market.mashape.com/omgvamp/hearthstone#
+
+5. node bot
 
 # Lessons learned / Thoughts
 1.  I'll get this up and running on heroku soon, when i do, i'll just have it auto deploy from an origin/production branch.
