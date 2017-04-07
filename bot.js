@@ -15,21 +15,16 @@ const bot = new Discord.Client();
 
 // the token of your bot - https://discordapp.com/developers/applications/me
 const token = process.env.bot_token;
-
 const sbfvgs_id = "216034888372060162";
-
 const hscard_url = "https://omgvamp-hearthstone-v1.p.mashape.com/cards/search/";
 const hscard_headers = { "X-Mashape-Key": process.env.mashape_hscard_token, "Accept": "application/json" };
-
 let emojis = {};
 
 
 // the ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted.
 bot.on('ready', () => {
-    console.log('I am ready!---   ');
-    console.log("bot guild name by id is:  " + bot.guilds.get("216034888372060162").name);
-    console.log(bot.guilds.get(sbfvgs_id).emojis.last());
+    emojis = bot.guilds.get(sbfvgs_id).emojis;
 });
 
 // create an event listener for messages
@@ -46,7 +41,6 @@ bot.on('message', message => {
         console.log("custom emoji is:  " + emoji.name + "  code:  " + emoji.toString());
         message.channel.sendMessage(message.guild.emojis.random().toString());
     }
-
 
 
     if (message.content.startsWith("/cardjson")) {
@@ -80,15 +74,15 @@ bot.on('message', message => {
     if (message.content.startsWith("/xkcd")) {
         let item = message.content.substr(6);
         let url = "https://xkcd.com/";
-        if (item) {
-
-        }
+        request({ url: "https://xkcd.com/info.0.json" }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var info = JSON.parse(body);
+                message.channel.sendMessage(info.title + "\n" + info.img + "\n" + info.alt);
+            }
+        });
     }
 
-
     //message.react(message.guild.emojis.random());
-
-
 });
 
 // log our bot in
