@@ -18,7 +18,7 @@ const token = process.env.bot_token;
 
 const sbfvgs_id = "216034888372060162";
 
-const hscard_url = "https://omgvamp-hearthstone-v1.p.mashape.com/cards/";
+const hscard_url = "https://omgvamp-hearthstone-v1.p.mashape.com/cards/search/";
 const hscard_headers = { "X-Mashape-Key": process.env.mashape_hscard_token, "Accept": "application/json" };
 
 let emojis = {};
@@ -75,6 +75,14 @@ bot.on('message', message => {
             }
         });
 
+    }
+
+    if (message.content.startsWith("/xkcd")) {
+        let item = message.content.substr(6);
+        let url = "https://xkcd.com/";
+        if (item) {
+
+        }
     }
 
 
