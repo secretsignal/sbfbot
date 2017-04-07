@@ -1,9 +1,7 @@
-/*
-  A ping pong bot, whenever you send "ping", it replies "pong".
-*/
-
-
 require('dotenv').config();
+
+var http = require("http"), port = process.env.PORT || 8888; // used for a very simple webserver (keeps heroku from shutting down the bot)
+http.createServer(function (request, response) { response.statusCode = 200; response.end(); }).listen(port);
 
 var request = require('request');
 
@@ -18,7 +16,15 @@ const token = process.env.bot_token;
 const sbfvgs_id = "216034888372060162";
 const hscard_url = "https://omgvamp-hearthstone-v1.p.mashape.com/cards/search/";
 const hscard_headers = { "X-Mashape-Key": process.env.mashape_hscard_token, "Accept": "application/json" };
+
 let emojis = {};
+
+
+
+
+
+
+
 
 
 // the ready event is vital, it means that your bot will only start reacting to information
