@@ -18,8 +18,7 @@ const hscard_url = "https://omgvamp-hearthstone-v1.p.mashape.com/cards/search/";
 const hscard_headers = { "X-Mashape-Key": process.env.mashape_hscard_token, "Accept": "application/json" };
 
 let emojis = {};
-
-
+let botName = "";
 
 
 
@@ -31,61 +30,65 @@ let emojis = {};
 // from Discord _after_ ready is emitted.
 bot.on('ready', () => {
     emojis = bot.guilds.get(sbfvgs_id).emojis;
+    bot.user.setGame("beep beep boop");
+    botName = bot.user.username;
 });
 
 // create an event listener for messages
 bot.on('message', message => {
-    // if the message is "ping",
-    if (message.content === 'marco') {
-        // send "pong" to the same channel.
-        message.channel.sendMessage('polo');
-        //message.react(message.guild.emojis.random());
-    }
+    if (message.isMentioned(botName)) {
+        // if the message is "ping",
+        if (message.content === 'marco') {
+            // send "pong" to the same channel.
+            message.channel.sendMessage('polo');
+            //message.react(message.guild.emojis.random());
+        }
 
-    if (message.content === "/randomEmoji") {
-        var emoji = bot.guilds.get(sbfvgs_id).emojis.first();
-        console.log("custom emoji is:  " + emoji.name + "  code:  " + emoji.toString());
-        message.channel.sendMessage(message.guild.emojis.random().toString());
-    }
+        if (message.content === "emote") {
+            var emoji = bot.guilds.get(sbfvgs_id).emojis.first();
+            console.log("custom emoji is:  " + emoji.name + "  code:  " + emoji.toString());
+            message.channel.sendMessage(message.guild.emojis.random().toString());
+        }
 
 
-    if (message.content.startsWith("/cardjson")) {
-        var card = message.content.substr(10);
-        var opts = { url: encodeURI(hscard_url + card), headers: hscard_headers };
-        console.log("hscard: requesting:  " + opts.url);
-        request(opts, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var info = JSON.parse(body);
-                console.log("found card: " + info[0].name);
-                console.log(JSON.stringify(info));
-                message.channel.sendMessage("```" + JSON.stringify(info) + "```");
-            }
-        });
+        if (message.content.startsWith("cardjson")) {
+            var card = message.content.substr(10);
+            var opts = { url: encodeURI(hscard_url + card), headers: hscard_headers };
+            console.log("hscard: requesting:  " + opts.url);
+            request(opts, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var info = JSON.parse(body);
+                    console.log("found card: " + info[0].name);
+                    console.log(JSON.stringify(info));
+                    message.channel.sendMessage("```" + JSON.stringify(info) + "```");
+                }
+            });
 
-    }
+        }
 
-    if (message.content.startsWith("/card")) {
-        var card = message.content.substr(6);
-        var opts = { url: encodeURI(hscard_url + card), headers: hscard_headers };
-        console.log("hscard: requesting:  " + opts.url);
-        request(opts, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var info = JSON.parse(body);
-                message.channel.sendMessage(info[0].imgGold);
-            }
-        });
+        if (message.content.startsWith("card")) {
+            var card = message.content.substr(6);
+            var opts = { url: encodeURI(hscard_url + card), headers: hscard_headers };
+            console.log("hscard: requesting:  " + opts.url);
+            request(opts, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var info = JSON.parse(body);
+                    message.channel.sendMessage(info[0].imgGold);
+                }
+            });
 
-    }
+        }
 
-    if (message.content.startsWith("/xkcd")) {
-        let item = message.content.substr(6);
-        let url = "https://xkcd.com/";
-        request({ url: "https://xkcd.com/info.0.json" }, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var info = JSON.parse(body);
-                message.channel.sendMessage(info.title + "\n" + info.img + "\n" + info.alt);
-            }
-        });
+        if (message.content.startsWith("xkcd")) {
+            let item = message.content.substr(6);
+            let url = "https://xkcd.com/";
+            request({ url: "https://xkcd.com/info.0.json" }, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var info = JSON.parse(body);
+                    message.channel.sendMessage(info.title + "\n" + info.img + "\n" + info.alt);
+                }
+            });
+        }
     }
 
     //message.react(message.guild.emojis.random());
