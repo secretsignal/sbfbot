@@ -1,0 +1,12 @@
+{
+    "extends": "standard",
+    "plugins": [
+        "standard",
+        "promise"
+    ],
+    "rules": {
+        "semi": 0,
+        "camelcase": 0,
+        "indent": 0
+    }
+}
