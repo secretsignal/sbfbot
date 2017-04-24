@@ -6,7 +6,7 @@ class ExampleCommand extends AbstractBaseCommand {
      * {boolean} adminOnly (optional).  if it can only be run by administrators.
      */
     constructor() {
-        super("example", false);
+        super("example", false, "example command");
     }
 
     /**

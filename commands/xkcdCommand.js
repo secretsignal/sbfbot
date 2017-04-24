@@ -7,7 +7,7 @@ const hscard_headers = { 'X-Mashape-Key': process.env.mashape_hscard_token, 'Acc
 
 class XKCDCommand extends AbstractBaseCommand {
     constructor() {
-        super("xkcd", false);
+        super("xkcd", false, "fetches the latest xkcd comic");
     }
 
     do(message) {

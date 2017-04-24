@@ -18,8 +18,6 @@ class CommandRouter {
             });
         });
     }
-
-    add(command) { this.commands.push(command); }
     route(message) {
         this.commands.map((command) => {
             if (message.content.includes(command.name)) {

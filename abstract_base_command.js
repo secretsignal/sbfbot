@@ -6,6 +6,7 @@
 class AbstractBaseCommand {
     get name() { return this._name; }
     get adminOnly() { return this._adminOnly; }
+    get details() { return this._description; }
     /**
      * 
      * @param {Object} client reference to the bot's discord client object 
@@ -20,10 +21,13 @@ class AbstractBaseCommand {
     /** 
      * @param {string} name The Name the commad is recognized by. example:  "card" or "/card" 
      */
-    constructor(name, adminOnly = false) {
+    constructor(name, adminOnly = false, description = "") {
         this._name = name;
         this._adminOnly = adminOnly;
+        this._description = description;
     }
+
+
 
     call(message) {
         if (this._adminOnly && this.can(message)) this.do(message);

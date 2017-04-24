@@ -6,7 +6,7 @@ class BotStatusCommand extends AbstractBaseCommand {
      * {boolean} adminOnly (optional).  if it can only be run by administrators.
      */
     constructor() {
-        super("botstatus", true);
+        super("botstatus", true, "change the bot status - this command is admins only");
     }
 
     /**

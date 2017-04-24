@@ -15,7 +15,7 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
      * {boolean} adminOnly (optional).  if it can only be run by administrators.
      */
     constructor() {
-        super("twod", false);
+        super("twod", false, "how many days username has wasted on destiny. defaults to playstation");
     }
 
     /**
