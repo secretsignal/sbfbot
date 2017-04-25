@@ -2,7 +2,6 @@
  * A simple command router to make bot dev easier.
  */
 
-const dir = './commands/'; // the commands will be loaded from here.
 const fs = require('fs');
 
 class CommandRouter {
@@ -11,9 +10,11 @@ class CommandRouter {
         this.client = client;
         this.guild_id = guild_id;
         this.commands = [];
-        fs.readdir(dir, (err, files) => {
+        fs.readdir("app/commands", (err, files) => {
+            if (err) console.log(err);
+
             files.forEach(file => {
-                let command = require(dir + "/" + file);
+                let command = require("./commands/" + file);
                 this.commands.push(new command());
             });
         });

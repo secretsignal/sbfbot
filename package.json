@@ -6,12 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "start": "node bot.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.0.0",
     "dotenv": "^4.0.0",
-    "request": "^2.81.0"
+    "pg": "^6.1.5",
+    "pg-hstore": "^2.3.2",
+    "request": "^2.81.0",
+    "sequelize": "^3.30.4",
+    "uws": "^0.14.1"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

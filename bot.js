@@ -1,12 +1,15 @@
 require('dotenv').config();
-const commandRouter = require('./command_router');
+
+const commandRouter = require('./app/command_router');
 
 const botenv = process.env.ENV || "debug" // the bot's current running environment.
 const http = require('http');
 const port = process.env.PORT || 8888; // used for a very simple webserver (keeps heroku from shutting down the bot)
 http.createServer(function (request, response) { response.statusCode = 200; response.end(); }).listen(port);
 
-//const request = require('request');
+//const Sequelize = require('sequelize')
+//var sequelize = new Sequelize(process.env.DATABASE_URL);
+
 
 // import the discord.js module
 const Discord = require('discord.js');
@@ -28,6 +31,7 @@ bot.on('message', message => {
 bot.on('ready', () => {
   bot.user.setGame('Latest SBFVGS Podcast');
   this.commandRouter = new commandRouter(bot, SBFVGS_ID);
+  console.log('this bot is now ready.');
 });
 
 // log our bot in
