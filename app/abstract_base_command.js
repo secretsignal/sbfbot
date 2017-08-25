@@ -4,9 +4,15 @@
  *  TLDR:  Right now just supporting "ADMINISTRATOR"
  */
 class AbstractBaseCommand {
-    get name() { return this._name; }
-    get adminOnly() { return this._adminOnly; }
-    get details() { return this._description; }
+    get name() {
+        return this._name;
+    }
+    get adminOnly() {
+        return this._adminOnly;
+    }
+    get details() {
+        return this._description;
+    }
     /**
      * 
      * @param {Object} client reference to the bot's discord client object 
@@ -39,7 +45,9 @@ class AbstractBaseCommand {
         else return false;
     }
 
-    do(message) { console.log("AbstracBaseCommand.do was called.") }
+    do(message) {
+        console.log("AbstracBaseCommand.do was called.")
+    }
 
     /**
      * 
@@ -47,7 +55,7 @@ class AbstractBaseCommand {
      * @param {string} command the keyword this command uses
      */
     getParams(content, command) {
-        let length = command.length + 1;
+        let length = command.length;
         let index = content.search(command);
         return content.substr(index + length);
     }

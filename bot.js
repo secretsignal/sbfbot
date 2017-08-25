@@ -5,7 +5,10 @@ const commandRouter = require('./app/command_router');
 const botenv = process.env.ENV || "debug" // the bot's current running environment.
 const http = require('http');
 const port = process.env.PORT || 8888; // used for a very simple webserver (keeps heroku from shutting down the bot)
-http.createServer(function (request, response) { response.statusCode = 200; response.end(); }).listen(port);
+http.createServer(function (request, response) {
+  response.statusCode = 200;
+  response.end();
+}).listen(port);
 
 //const Sequelize = require('sequelize')
 //var sequelize = new Sequelize(process.env.DATABASE_URL);
@@ -21,7 +24,11 @@ const SBFVGS_ID = '216034888372060162';
 
 // create an event listener for messages
 bot.on('message', message => {
-  if (message.isMentioned(bot.user)) {
+
+  //if (message.isMentioned(bot.user)) {
+  //  this.commandRouter.route(message);
+  //}
+  if (message.content.startsWith("!")) {
     this.commandRouter.route(message);
   }
 });
