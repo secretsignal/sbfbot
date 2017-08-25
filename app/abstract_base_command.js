@@ -55,7 +55,7 @@ class AbstractBaseCommand {
      * @param {string} command the keyword this command uses
      */
     getParams(content, command) {
-        let length = command.length;
+        let length = command.length + 1;
         let index = content.search(command);
         return content.substr(index + length);
     }
