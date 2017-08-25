@@ -29,7 +29,7 @@ bot.on('message', message => {
   //if (message.isMentioned(bot.user)) {
   //  this.commandRouter.route(message);
   //}
-  if (process.env.bot_env === "production") {
+  if (process.env.botenv === "production") {
     if (message.content.startsWith("!")) {
       this.commandRouter.route(message);
     }
