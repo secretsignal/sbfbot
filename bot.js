@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const commandRouter = require('./app/command_router');
+const AbstractBaseCommand = require('./app/abstract_base_command');
 
 const botenv = process.env.ENV || "debug" // the bot's current running environment.
 const http = require('http');
@@ -28,8 +29,14 @@ bot.on('message', message => {
   //if (message.isMentioned(bot.user)) {
   //  this.commandRouter.route(message);
   //}
-  if (message.content.startsWith("!")) {
-    this.commandRouter.route(message);
+  if (process.env.bot_env === "production") {
+    if (message.content.startsWith("!")) {
+      this.commandRouter.route(message);
+    }
+  } else {
+    if (message.content.startsWith("?")) {
+      this.commandRouter.route(message);
+    }
   }
 });
 

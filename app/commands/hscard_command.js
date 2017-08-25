@@ -14,7 +14,7 @@ class HSCardCommand extends AbstractBaseCommand {
      * {boolean} adminOnly (optional).  if it can only be run by administrators.
      */
     constructor() {
-        super("card", false, "get a hearthstone card by name");
+        super("!card", false, "get a hearthstone card by name");
     }
 
     /**

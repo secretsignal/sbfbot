@@ -1,12 +1,12 @@
 let AbstractBaseCommand = require('../abstract_base_command');
 
-class RollCommand extends AbstractBaseCommand {
+class RNGCommand extends AbstractBaseCommand {
 	/**
 	 * {string} name The Name of this Command
 	 * {boolean} adminOnly (optional).  if it can only be run by administrators.
 	 */
 	constructor() {
-		super("roll", false, "roll a number between 1 and X");
+		super("!rng", false, "roll a number between 0 and X");
 	}
 
 	/**
@@ -16,8 +16,8 @@ class RollCommand extends AbstractBaseCommand {
 	do(message) {
 		let max = super.getParams(message.content, this.name);
 		let value = Math.floor((Math.random() * Number(max)));
-		message.channel.sendMessage(`_${message.author} rolled a ${value}_`);
+		message.channel.sendMessage(`_${message.author} random number: ${value}_`);
 	}
 }
 
-module.exports = RollCommand;
+module.exports = RNGCommand;

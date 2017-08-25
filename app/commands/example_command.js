@@ -6,13 +6,13 @@ class ExampleCommand extends AbstractBaseCommand {
      * {boolean} adminOnly (optional).  if it can only be run by administrators.
      */
     constructor() {
-        super("example", false, "example command");
+        super("!example", false, "example command");
     }
 
     /**
-    * @param {Object} message A discordjs Message object.  
-    * info:  https://discord.js.org/#/docs/main/stable/class/Message
-    */
+     * @param {Object} message A discordjs Message object.  
+     * info:  https://discord.js.org/#/docs/main/stable/class/Message
+     */
     do(message) {
         message.channel.sendMessage("http://www.troll.me/images/futurama-fry/could-be-a-man-in-robotsuit-or-could-it-be-robot-in-mansuit-in-a-robotsuit-thumb.jpg");
     }

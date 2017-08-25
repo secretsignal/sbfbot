@@ -13,16 +13,7 @@ class AbstractBaseCommand {
     get details() {
         return this._description;
     }
-    /**
-     * 
-     * @param {Object} client reference to the bot's discord client object 
-     * @param {string} guild_id reference to the specific discord guild ID that we manage.
-     */
-    static initialize(client, guild_id) {
-        this.client = client;
-        this.gid = guild_id;
-        this.guild = client.guilds.get(guild_id); // a static reference to the managed guild object.
-    }
+
 
     /** 
      * @param {string} name The Name the commad is recognized by. example:  "card" or "/card" 
@@ -33,17 +24,26 @@ class AbstractBaseCommand {
         this._description = description;
     }
 
-
-
-    call(message) {
-        if (this._adminOnly && this.can(message)) this.do(message);
-        else message.channel.sendMessage("you do not have permission to use this command.")
+    /**
+     * 
+     * @param {Object} client reference to the bot's discord client object 
+     * @param {string} guild_id reference to the specific discord guild ID that we manage.
+     */
+    initialize(client, guild_id) {
+        this.client = client;
+        this.gid = guild_id;
+        this.guild = client.guilds.get(guild_id); // a reference to the managed guild object.
     }
 
-    can(message) {
-        if (this.guild.member(message.author.id).hasPermission("ADMINISTRATOR")) return true;
-        else return false;
-    }
+    // call(message) {
+    //     if (this._adminOnly && this.can(message)) this.do(message);
+    //     else message.channel.sendMessage("you do not have permission to use this command.")
+    // }
+
+    // can(message) {
+    //     if (this.guild.member(message.author.id).hasPermission("ADMINISTRATOR")) return true;
+    //     else return false;
+    // }
 
     do(message) {
         console.log("AbstracBaseCommand.do was called.")

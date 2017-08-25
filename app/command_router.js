@@ -9,13 +9,18 @@ class CommandRouter {
     constructor(client, guild_id) {
         this.client = client;
         this.guild_id = guild_id;
+        this.guild = client.guilds.get(guild_id); // a static reference to the managed guild object.
         this.commands = [];
+
         fs.readdir("app/commands", (err, files) => {
             if (err) console.log(err);
 
             files.forEach(file => {
                 let command = require("./commands/" + file);
-                this.commands.push(new command());
+                // TODO: This is ghetto, but not sure of a better way to do this right now.
+                let thisCommand = new command(); // instanciate the command from the binary file on the hard drive
+                thisCommand.initialize(this.client, this.guild_id); // initialize this new command.
+                this.commands.push(thisCommand); // add to the list.
             });
         });
     }
