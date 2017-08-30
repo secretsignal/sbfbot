@@ -35,7 +35,9 @@ class HSCardSearchCommand extends AbstractBaseCommand {
                 info.map((result) => {
                     results.push(result.imgGold);
                 });
-                message.channel.sendMessage(results);
+                //message.channel.sendMessage(results);
+                //message.reply(results);
+                message.author.sendMessage(results);
             }
         });
     }
