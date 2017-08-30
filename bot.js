@@ -48,5 +48,9 @@ bot.on('ready', () => {
   console.log('this bot is now ready.');
 });
 
+bot.on('guildMemberAdd', member => {
+  member.guild.defaultChannel.send(`Welcome to the server, ${member}!`);
+});
+
 // log our bot in
 bot.login(TOKEN);

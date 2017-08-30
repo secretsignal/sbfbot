@@ -35,15 +35,14 @@ class AbstractBaseCommand {
         this.guild = client.guilds.get(guild_id); // a reference to the managed guild object.
     }
 
-    // call(message) {
-    //     if (this._adminOnly && this.can(message)) this.do(message);
-    //     else message.channel.sendMessage("you do not have permission to use this command.")
-    // }
+    getClient() {
+        return this.client;
+    }
 
-    // can(message) {
-    //     if (this.guild.member(message.author.id).hasPermission("ADMINISTRATOR")) return true;
-    //     else return false;
-    // }
+    can(message) {
+        if (this.guild.member(message.author.id).hasPermission("ADMINISTRATOR")) return true;
+        else return false;
+    }
 
     do(message) {
         console.log("AbstracBaseCommand.do was called.")
