@@ -6,7 +6,7 @@ const Discord = require('discord.js');
 
 class MarcoCommand extends AbstractBaseCommand {
 	constructor() {
-		super("!joke", false, "dad jokes are awesome.");
+		super("joke", false, "dad jokes are awesome.");
 	}
 	do(message) {
 		request({

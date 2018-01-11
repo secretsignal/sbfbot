@@ -6,7 +6,7 @@ class RNGCommand extends AbstractBaseCommand {
 	 * {boolean} adminOnly (optional).  if it can only be run by administrators.
 	 */
 	constructor() {
-		super("!rng", false, "roll a number between 0 and X");
+		super("rng", false, "roll a number between 0 and X");
 	}
 
 	/**

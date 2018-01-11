@@ -18,7 +18,7 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
      * {boolean} adminOnly (optional).  if it can only be run by administrators.
      */
     constructor() {
-        super("!twod", false, "how many days username has wasted on destiny. defaults to playstation");
+        super("twod", false, "how many days username has wasted on destiny. defaults to playstation");
     }
 
     /**
@@ -34,21 +34,19 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
         let details = "/" + device + "&user=" + username;
 
         let lookup_resource = `https://www.bungie.net/Platform/Destiny/${device}/Stats/GetMembershipIdByDisplayName/${username}`;
+
         let opts = {
             url: encodeURI(lookup_resource),
             headers: headers
         };
-        console.log('console: ' + opts.url);
-
-
 
         request(opts, function (error, response, body) {
             console.log(body);
             if (!error && response.statusCode === 200) {
                 let info = JSON.parse(body);
                 console.log(`bungo id for ${username} is ${info.Response} `);
-                //message.channel.sendMessage(`bungo id for ${username} is ${info.Response} `);
-                let lookup_resource = `https://www.bungie.net/Platform/Destiny/${device}/Account/${info.Response}/Summary`;
+                let lookup_resource = `https://www.bungie.net/Platform/Destiny2/${device}/Profile/${info.Response}/?components=200`;
+
                 let opts = {
                     url: encodeURI(lookup_resource),
                     headers: headers
@@ -59,10 +57,10 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
                         if (!error && response.statusCode === 200) {
                             let info = JSON.parse(body);
                             let totalTime = 0;
-                            info.Response.data.characters.forEach(item => {
-                                console.log(item.characterBase.minutesPlayedTotal);
-                                totalTime += Number(item.characterBase.minutesPlayedTotal);
-                            });
+                            let characters = Object.keys(info.Response.characters.data);
+                            characters.forEach(id => {
+                                totalTime += Number(info.Response.characters.data[id].minutesPlayedTotal);
+                            })
                             message.channel.sendMessage(`${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny!`);
                         }
                     });

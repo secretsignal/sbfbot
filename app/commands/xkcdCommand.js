@@ -10,7 +10,7 @@ const hscard_headers = {
 
 class XKCDCommand extends AbstractBaseCommand {
     constructor() {
-        super("!xkcd", false, "fetches the latest xkcd comic");
+        super("xkcd", false, "fetches the latest xkcd comic");
     }
 
     do(message) {

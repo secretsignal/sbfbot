@@ -1,5 +1,7 @@
 let AbstractBaseCommand = require('../abstract_base_command');
-const {decode} = require("deckstrings");
+const {
+    decode
+} = require("deckstrings");
 const request = require('request');
 const url = 'https://api.hearthstonejson.com/v1/latest/enUS/cards.json';
 const hscard_headers = {
@@ -20,7 +22,7 @@ const _checkForLongDeckStringFormat = (deckString) => {
 };
 
 const _buildFormattedString = (decodedDeckString, deckString) => {
-    let cardList = _buildCardList(decodedDeckString.cards);			
+    let cardList = _buildCardList(decodedDeckString.cards);
     let className = _buildClassName(decodedDeckString.heroes[0]);
     let setFormat = decodedDeckString.format === 1 ? 'Wild' : 'Standard';
 
@@ -48,7 +50,7 @@ const _buildCardList = (cardCodes) => {
         cardObject.cost = cardJson.cost;
         cardObject.name = cardJson.name;
         cardObject.rarity = cardJson.rarity[0].toUpperCase() + cardJson.rarity.substring(1).toLowerCase();
-        
+
         cardList.push(cardObject);
     });
 
@@ -69,7 +71,7 @@ class HSDecodeCommand extends AbstractBaseCommand {
      * {boolean} adminOnly (optional).  if it can only be run by administrators.
      */
     constructor() {
-        super('!decode', false, 'decode a deck string');
+        super('decode', false, 'decode a deck string');
     }
 
     /**
