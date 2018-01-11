@@ -25,7 +25,6 @@ class CommandRouter {
         });
     }
     route(message) {
-        console.log('message:   ' + message.content);
         this.commands.map((command) => {
             if (message.content.includes(command.name)) {
                 command.do(message);
