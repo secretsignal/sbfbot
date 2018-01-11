@@ -61,7 +61,7 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
                             characters.forEach(id => {
                                 totalTime += Number(info.Response.characters.data[id].minutesPlayedTotal);
                             })
-                            message.channel.sendMessage(`${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny!`);
+                            message.channel.sendMessage(`${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 2!`);
                         }
                     });
                 } else {
