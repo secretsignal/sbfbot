@@ -40,11 +40,11 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
             headers: headers
         };
 
+        let returnMessage;
+
         request(opts, function (error, response, body) {
-            console.log(body);
             if (!error && response.statusCode === 200) {
                 let info = JSON.parse(body);
-                console.log(`bungo id for ${username} is ${info.Response} `);
                 let lookup_resource = `https://www.bungie.net/Platform/Destiny2/${device}/Profile/${info.Response}/?components=200`;
 
                 let opts = {
@@ -61,11 +61,15 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
                             characters.forEach(id => {
                                 totalTime += Number(info.Response.characters.data[id].minutesPlayedTotal);
                             })
-                            message.channel.sendMessage(`${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 2!`);
+                            returnMessage = `${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 2!`;
+                            message.channel.sendMessage(returnMessage);
+                            if (message.testCallback) message.testCallback(returnMessage);
                         }
                     });
                 } else {
                     message.channel.sendMessage(info.ErrorStatus);
+                    if (message.testCallback) message.testCallback(info.ErrorStatus);
+
                 }
             }
         });
