@@ -22,18 +22,25 @@ class HSCardCommand extends AbstractBaseCommand {
      * info:  https://discord.js.org/#/docs/main/stable/class/Message
      */
     do(message) {
-        let card = super.getParams(message.content, this.name);
-        let opts = {
-            url: encodeURI(search_url + card),
-            headers: hscard_headers
-        };
-        console.log('hscard: requesting:  ' + opts.url);
-        request(opts, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-                let info = JSON.parse(body);
-                message.channel.sendMessage(info[0].imgGold);
-            }
-        });
+        if (!message.content.includes('cardsearch')) {
+            let card = super.getParams(message.content, this.name);
+            let opts = {
+                url: encodeURI(search_url + card),
+                headers: hscard_headers
+            };
+            let returnMessage;
+            request(opts, function (error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    let info = JSON.parse(body);
+                    returnMessage = info[0].imgGold;
+                } else {
+                    returnMessage = `Sorry, I can't find that card :(`;
+                }
+
+                message.channel.send(returnMessage);
+                if (message.testCallback) message.testCallback(returnMessage);
+            });
+        }
     }
 }
 
