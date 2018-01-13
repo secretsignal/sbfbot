@@ -27,7 +27,7 @@ class HSCardSearchCommand extends AbstractBaseCommand {
             url: encodeURI(search_url + card),
             headers: hscard_headers
         };
-        console.log('hscardsearch: requesting:  ' + opts.url);
+        let returnMessage;
         request(opts, function (error, response, body) {
             if (!error && response.statusCode === 200) {
                 let info = JSON.parse(body);
@@ -35,10 +35,13 @@ class HSCardSearchCommand extends AbstractBaseCommand {
                 info.map((result) => {
                     results.push(result.imgGold);
                 });
-                //message.channel.sendMessage(results);
-                //message.reply(results);
-                message.author.sendMessage(results);
+                returnMessage = results;
+            } else {
+                returnMessage = `Sorry, no results for that card search :(`;
             }
+            message.author.sendMessage(returnMessage);
+            if (message.testCallback) message.testCallback(returnMessage);
+
         });
     }
 }
