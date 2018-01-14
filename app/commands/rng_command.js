@@ -16,7 +16,9 @@ class RNGCommand extends AbstractBaseCommand {
 	do(message) {
 		let max = super.getParams(message.content, this.name);
 		let value = Math.floor((Math.random() * Number(max)));
-		message.channel.sendMessage(`_${message.author} random number: ${value}_`);
+		let returnMessage = `_${message.author} random number: ${value}_`;
+		message.channel.sendMessage(returnMessage);
+		if (message.testCallback) message.testCallback(returnMessage);
 	}
 }
 

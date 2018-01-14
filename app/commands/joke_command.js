@@ -4,7 +4,7 @@ const request = require('request');
 // import the discord.js module
 const Discord = require('discord.js');
 
-class MarcoCommand extends AbstractBaseCommand {
+class JokeCommand extends AbstractBaseCommand {
 	constructor() {
 		super("joke", false, "dad jokes are awesome.");
 	}
@@ -17,9 +17,10 @@ class MarcoCommand extends AbstractBaseCommand {
 		}, function (error, response, body) {
 			if (!error && response.statusCode === 200) {
 				message.reply(body);
+				if (message.testCallback) message.testCallback(body);
 			}
 		})
 	}
 }
 
-module.exports = MarcoCommand;
+module.exports = JokeCommand;

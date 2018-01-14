@@ -37,16 +37,11 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
 			url: encodeURI(lookup_resource),
 			headers: headers
 		};
-		console.log('console: ' + opts.url);
-
-
+		let returnMessage;
 
 		request(opts, function (error, response, body) {
-			console.log(body);
 			if (!error && response.statusCode === 200) {
 				let info = JSON.parse(body);
-				console.log(`bungo id for ${username} is ${info.Response} `);
-				//message.channel.sendMessage(`bungo id for ${username} is ${info.Response} `);
 				let lookup_resource = `https://www.bungie.net/Platform/Destiny/${device}/Account/${info.Response}/Summary`;
 				let opts = {
 					url: encodeURI(lookup_resource),
@@ -59,14 +54,18 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
 							let info = JSON.parse(body);
 							let totalTime = 0;
 							info.Response.data.characters.forEach(item => {
-								console.log(item.characterBase.minutesPlayedTotal);
 								totalTime += Number(item.characterBase.minutesPlayedTotal);
 							});
-							message.channel.sendMessage(`${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 1!`);
+							returnMessage = `${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 1!`;
+							message.channel.sendMessage(returnMessage);
+							if (message.testCallback) message.testCallback(returnMessage);
+
 						}
 					});
 				} else {
 					message.channel.sendMessage(info.ErrorStatus);
+					if (message.testCallback) message.testCallback(info.ErrorStatus);
+
 				}
 			}
 		});

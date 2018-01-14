@@ -79,21 +79,23 @@ class HSDecodeCommand extends AbstractBaseCommand {
      * info:  https://discord.js.org/#/docs/main/stable/class/Message
      */
     do(message) {
-        let deckString = super.getParams(message.content, this.name);
+        let deckString = super.getParams(message.content, this.name); 
         let opts = {
             url: url
         };
+        let returnMessage;
         request(opts, (error, response, body) => {
             if (!error && response.statusCode === 200) {
                 cardsjson = JSON.parse(body);
-
                 try {
                     let decodedDeckString = _decodeDeckString(deckString);
                     let formattedString = _buildFormattedString(decodedDeckString, deckString);
-                    message.channel.send(formattedString);
+                    returnMessage = formattedString;
                 } catch (e) {
-                    console.log(`Error occurred decoding deckstring: ${e.message}`);
-                    message.channel.send(`Sorry, I can't decode that deck string :(`);
+                    returnMessage = `Sorry, I can't decode that deck string :(`;
+                } finally {
+                    message.channel.send(returnMessage);
+                    if (message.testCallback) message.testCallback(returnMessage);
                 }
             }
         });

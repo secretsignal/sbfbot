@@ -5,7 +5,9 @@ class MarcoCommand extends AbstractBaseCommand {
         super("marco", false, "simple game of marco polo");
     }
     do(message) {
-        message.channel.sendMessage("polo!");
+        let returnMessage = 'polo!';
+        message.channel.sendMessage(returnMessage);
+        if (message.testCallback) message.testCallback(returnMessage);
     }
 }
 
