@@ -1,6 +1,6 @@
 let AbstractBaseCommand = require('../abstract_base_command');
 
-const request = require('request');
+const request = require('request-promise');
 const search_url = 'https://omgvamp-hearthstone-v1.p.mashape.com/cards/search/';
 const hscard_headers = {
     'X-Mashape-Key': process.env.mashape_hscard_token,
@@ -29,14 +29,14 @@ class HSCardCommand extends AbstractBaseCommand {
                 headers: hscard_headers
             };
             let returnMessage;
-            request(opts, function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    let info = JSON.parse(body);
-                    returnMessage = info[0].imgGold;
-                } else {
-                    returnMessage = `Sorry, I can't find that card :(`;
-                }
-
+            request(opts)
+            .then( response => {
+                let info = JSON.parse(response);
+                returnMessage = info[0].imgGold;
+                message.channel.send(returnMessage);
+                if (message.testCallback) message.testCallback(returnMessage);
+            }).catch( () => {
+                returnMessage = `Sorry, I can't find that card :(`;
                 message.channel.send(returnMessage);
                 if (message.testCallback) message.testCallback(returnMessage);
             });

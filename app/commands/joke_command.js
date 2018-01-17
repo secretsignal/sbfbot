@@ -1,6 +1,6 @@
 let AbstractBaseCommand = require('../abstract_base_command');
 
-const request = require('request');
+const request = require('request-promise');
 // import the discord.js module
 const Discord = require('discord.js');
 
@@ -14,12 +14,10 @@ class JokeCommand extends AbstractBaseCommand {
 			headers: {
 				Accept: "text/plain"
 			}
-		}, function (error, response, body) {
-			if (!error && response.statusCode === 200) {
-				message.reply(body);
-				if (message.testCallback) message.testCallback(body);
-			}
-		})
+		}).then(response => {
+			message.reply(response);
+			if (message.testCallback) message.testCallback(response);
+		});
 	}
 }
 
