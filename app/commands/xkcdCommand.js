@@ -1,5 +1,5 @@
 let AbstractBaseCommand = require('../abstract_base_command');
-const request = require('request');
+const request = require('request-promise');
 
 let _getRandomIntInclusive = (min, max) => {
     min = Math.ceil(min);
@@ -16,13 +16,11 @@ let _getComicByNumber = (message, number) => {
     let returnMessage;
     request({
         url: `https://xkcd.com/${number}/info.0.json`
-    }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            let info = JSON.parse(body);
-            returnMessage = `#${info.num} \n${info.title}\n${info.img}\n${info.alt}`;
-            message.channel.sendMessage(returnMessage);
-            if (message.testCallback) message.testCallback(returnMessage);
-        }
+    }).then(response => {
+        let info = JSON.parse(response);
+        returnMessage = `#${info.num} \n${info.title}\n${info.img}\n${info.alt}`;
+        message.channel.sendMessage(returnMessage);
+        if (message.testCallback) message.testCallback(returnMessage);
     });
 };
 
@@ -35,13 +33,11 @@ class XKCDCommand extends AbstractBaseCommand {
         let params = super.getParams(message.content, this.name);
         request({
             url: 'https://xkcd.com/info.0.json'
-        }, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-                let info = JSON.parse(body);
-                if (params === 'latest') _getComicByNumber(message, info.num)
-                else if (parseInt(params)) _getComicByNumber(message, parseInt(params));
-                else _getRandomComic(message, info.num);
-            }
+        }).then(response => {
+            let info = JSON.parse(response);
+            if (params === 'latest') _getComicByNumber(message, info.num)
+            else if (parseInt(params)) _getComicByNumber(message, parseInt(params));
+            else _getRandomComic(message, info.num);
         });
     }
 }

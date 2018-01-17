@@ -2,7 +2,7 @@ let AbstractBaseCommand = require('../abstract_base_command');
 const {
     decode
 } = require("deckstrings");
-const request = require('request');
+const request = require('request-promise');
 const url = 'https://api.hearthstonejson.com/v1/latest/enUS/cards.json';
 const hscard_headers = {
     'Accept': 'application/json'
@@ -65,6 +65,13 @@ const _buildClassName = (heroId) => {
     return heroJson.cardClass[0].toUpperCase() + heroJson.cardClass.substring(1).toLowerCase();
 }
 
+const _fetchHearthstoneJson = () => {
+    let opts = {
+        url: url
+    };
+    return request(opts);
+};
+
 class HSDecodeCommand extends AbstractBaseCommand {
     /**
      * {string} name The Name of this Command
@@ -80,13 +87,11 @@ class HSDecodeCommand extends AbstractBaseCommand {
      */
     do(message) {
         let deckString = super.getParams(message.content, this.name); 
-        let opts = {
-            url: url
-        };
         let returnMessage;
-        request(opts, (error, response, body) => {
-            if (!error && response.statusCode === 200) {
-                cardsjson = JSON.parse(body);
+        
+        _fetchHearthstoneJson()
+         .then(response => {
+                cardsjson = JSON.parse(response);
                 try {
                     let decodedDeckString = _decodeDeckString(deckString);
                     let formattedString = _buildFormattedString(decodedDeckString, deckString);
@@ -97,7 +102,10 @@ class HSDecodeCommand extends AbstractBaseCommand {
                     message.channel.send(returnMessage);
                     if (message.testCallback) message.testCallback(returnMessage);
                 }
-            }
+        })
+        .catch(error => {
+            console.log(`An error occurred in the decode command: ${error}`);
+            message.channel.send(`Sorry, an error occurred executing that command :(`);
         });
     }
 }

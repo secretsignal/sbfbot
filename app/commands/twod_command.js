@@ -1,6 +1,6 @@
 let AbstractBaseCommand = require('../abstract_base_command');
 
-const request = require('request');
+const request = require('request-promise');
 //const search_url = 'https://www.wastedondestiny.com/api';
 
 /*  this API key is one i created for sbfvgs, keep in mind that we all might be using it at the same time
@@ -42,9 +42,12 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
 
         let returnMessage;
 
-        request(opts, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-                let info = JSON.parse(body);
+        request(opts)
+            .then(response => {
+                let info = JSON.parse(response);
+
+                if (info.Response == "0") throw info;
+
                 let lookup_resource = `https://www.bungie.net/Platform/Destiny2/${device}/Profile/${info.Response}/?components=200`;
 
                 let opts = {
@@ -52,27 +55,22 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
                     headers: headers
                 };
 
-                if (info.Response != "0") {
-                    request(opts, function (error, response, body) {
-                        if (!error && response.statusCode === 200) {
-                            let info = JSON.parse(body);
-                            let totalTime = 0;
-                            let characters = Object.keys(info.Response.characters.data);
-                            characters.forEach(id => {
-                                totalTime += Number(info.Response.characters.data[id].minutesPlayedTotal);
-                            })
-                            returnMessage = `${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 2!`;
-                            message.channel.sendMessage(returnMessage);
-                            if (message.testCallback) message.testCallback(returnMessage);
-                        }
-                    });
-                } else {
-                    message.channel.sendMessage(info.ErrorStatus);
-                    if (message.testCallback) message.testCallback(info.ErrorStatus);
-
-                }
-            }
-        });
+                return request(opts);
+            }).then(response => {
+                let info = JSON.parse(response);
+                let totalTime = 0;
+                let characters = Object.keys(info.Response.characters.data);
+                characters.forEach(id => {
+                    totalTime += Number(info.Response.characters.data[id].minutesPlayedTotal);
+                })
+                returnMessage = `${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 2!`;
+                message.channel.sendMessage(returnMessage);
+                if (message.testCallback) message.testCallback(returnMessage);
+            })
+            .catch(info => {
+                message.channel.sendMessage(info.ErrorStatus);
+                if (message.testCallback) message.testCallback(info.ErrorStatus);
+            });
     }
 }
 
