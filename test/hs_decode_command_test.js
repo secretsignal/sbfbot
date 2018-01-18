@@ -17,11 +17,10 @@ describe('#command: hs_decode', () => {
 
 	describe('-with a valid deckstring', () => {
 
-		it('should decode with expected result', (done) => {
+		it('should decode with expected result', async () => {
 			message.content = `!decode ${EXAMPLE_DECKSTRING}`;
 			message.testCallback = (result) => {
 				expect(result).to.equal(EXAMPLE_DECODED_DECKSTRING);
-				done();
 			};
 			command.do(message);
 		});
@@ -29,11 +28,10 @@ describe('#command: hs_decode', () => {
 
 	describe('-with an invalid deckstring', () => {
 
-		it('should return an error message', (done) => {
+		it('should return an error message', async () => {
 			message.content = `!decode ${EXAMPLE_INVALID_DECKSTRING}`;
 			message.testCallback = (result) => {
 				expect(result).to.equal(`Sorry, I can't decode that deck string :(`);
-				done();
 			};
 			command.do(message);
 		});

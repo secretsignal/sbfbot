@@ -18,11 +18,10 @@ describe('#command: hscard', () => {
 
 	describe('-with a valid card', () => {
 
-		it('should return a path to card image', (done) => {
+		it('should return a path to card image', async () => {
             message.content = `!card sylvanas`;
             message.testCallback = (result) => {
                 expect(result).to.equal(EXAMPLE_RESULT_SYLVANAS);
-				done();
             };
 			command.do(message);
 		});
@@ -30,11 +29,10 @@ describe('#command: hscard', () => {
 
 	describe('-with an invalid card', () => {
 
-		it('should return error message', (done) => {
+		it('should return error message', async () => {
             message.content = `!card notsylvanas`;
             message.testCallback = (result) => {
                 expect(result).to.equal(`Sorry, I can't find that card :(`);
-				done();
             };
 			command.do(message);
 		});

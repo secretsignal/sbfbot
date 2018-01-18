@@ -85,28 +85,20 @@ class HSDecodeCommand extends AbstractBaseCommand {
      * @param {Object} message A discordjs Message object.  
      * info:  https://discord.js.org/#/docs/main/stable/class/Message
      */
-    do(message) {
+    async do(message) {
         let deckString = super.getParams(message.content, this.name); 
         let returnMessage;
-        
-        _fetchHearthstoneJson()
-         .then(response => {
-                cardsjson = JSON.parse(response);
-                try {
-                    let decodedDeckString = _decodeDeckString(deckString);
-                    let formattedString = _buildFormattedString(decodedDeckString, deckString);
-                    returnMessage = formattedString;
-                } catch (e) {
-                    returnMessage = `Sorry, I can't decode that deck string :(`;
-                } finally {
-                    message.channel.send(returnMessage);
-                    if (message.testCallback) message.testCallback(returnMessage);
-                }
-        })
-        .catch(error => {
-            console.log(`An error occurred in the decode command: ${error}`);
-            message.channel.send(`Sorry, an error occurred executing that command :(`);
-        });
+        try {
+            let response = await _fetchHearthstoneJson();
+            cardsjson = JSON.parse(response);
+            let decodedDeckString = _decodeDeckString(deckString);
+            let formattedString = _buildFormattedString(decodedDeckString, deckString);
+            returnMessage = formattedString;
+            message.channel.send(returnMessage);
+            if (message.testCallback) message.testCallback(returnMessage);
+        } catch (error) {
+            message.channel.send(`Sorry, an error occurred executing that command :(`);   
+        }
     }
 }
 

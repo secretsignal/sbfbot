@@ -17,7 +17,7 @@ const _getAccessToken = () => {
 };
 
 class SpotifyAuthHelper {
-    static getAccessToken() {
+    static async getAccessToken() {
         return new Promise((resolve, reject) => {
             if (!accessToken) {
                 _getAccessToken()

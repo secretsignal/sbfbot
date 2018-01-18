@@ -21,15 +21,15 @@ class HSCardSearchCommand extends AbstractBaseCommand {
      * @param {Object} message A discordjs Message object.  
      * info:  https://discord.js.org/#/docs/main/stable/class/Message
      */
-    do(message) {
+    async do(message) {
         let card = super.getParams(message.content, this.name);
         let opts = {
             url: encodeURI(search_url + card),
             headers: hscard_headers
         };
         let returnMessage;
-        request(opts)
-            .then(response => {
+        try {
+            let response = await request(opts);
             let info = JSON.parse(response);
             let results = [];
             info.map((result) => {
@@ -39,11 +39,12 @@ class HSCardSearchCommand extends AbstractBaseCommand {
 
             message.author.sendMessage(returnMessage);
             if (message.testCallback) message.testCallback(returnMessage);
-        }).catch( () => {
+        } catch (error) 
+        {
             returnMessage = `Sorry, no results for that card search :(`;
             message.author.sendMessage(returnMessage);
             if (message.testCallback) message.testCallback(returnMessage);
-        });
+        }
     }
 }
 

@@ -18,11 +18,10 @@ describe('#command: spotify:artist', () => {
 
 	describe('-with the query "coheed and cambria"', () => {
 
-		it('should return a URL that matches the expected URL', (done) => {
+		it('should return a URL that matches the expected URL', async () => {
             message.content = `!spotify-artist coheed and cambria`;
             message.testCallback = (result) => {
                 expect(result).to.equal(EXPECTED_RESULT);
-				done();
             };
 			command.do(message);
 		});
@@ -30,11 +29,10 @@ describe('#command: spotify:artist', () => {
 
 	describe('-with a query of "notsylvanas"', () => {
 
-		it('should return error message', (done) => {
+		it('should return error message', async () => {
             message.content = `!spotify-artist notsylvanas`;
             message.testCallback = (result) => {
                 expect(result).to.equal(`Sorry, I can't find that artist :(`);
-				done();
             };
 			command.do(message);
 		});

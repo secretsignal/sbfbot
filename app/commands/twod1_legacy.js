@@ -24,7 +24,7 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
 	 * @param {Object} message A discordjs Message object.  
 	 * info:  https://discord.js.org/#/docs/main/stable/class/Message
 	 */
-	do(message) {
+	async do(message) {
 		let params = super.getParams(message.content, this.name);
 		let username = params.match(/\b(?:\W|[0-9])*(\w+)\b/)[0];
 		let device = 2;
@@ -39,32 +39,27 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
 		};
 		let returnMessage;
 
-		request(opts)
-			.then((response) => {
-				let info = JSON.parse(response);
-				if (info.Response == "0") throw info;
+		try {
+			let membershipResponse = await request(opts);
+			let membershipInfo = JSON.parse(membershipResponse);
+			if (membershipInfo.Response == "0") throw membershipInfo;
 
-				let lookup_resource = `https://www.bungie.net/Platform/Destiny/${device}/Account/${info.Response}/Summary`;
-				let opts = {
-					url: encodeURI(lookup_resource),
-					headers: headers
-				};
+			lookup_resource = `https://www.bungie.net/Platform/Destiny/${device}/Account/${membershipInfo.Response}/Summary`;
+			opts.url = encodeURI(lookup_resource);
 
-				return request(opts);
-			}).then((response) => {
-				let info = JSON.parse(response);
-				let totalTime = 0;
-				info.Response.data.characters.forEach(item => {
-					totalTime += Number(item.characterBase.minutesPlayedTotal);
-				});
-				returnMessage = `${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 1!`;
-				message.channel.sendMessage(returnMessage);
-				if (message.testCallback) message.testCallback(returnMessage);
-			})
-			.catch((info) => {
-				message.channel.sendMessage(info.ErrorStatus);
-				if (message.testCallback) message.testCallback(info.ErrorStatus);	
+			let profileResponse = await request(opts);
+			let profileInfo = JSON.parse(profileResponse);
+			let totalTime = 0;
+			profileInfo.Response.data.characters.forEach(item => {
+				totalTime += Number(item.characterBase.minutesPlayedTotal);
 			});
+			returnMessage = `${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 1!`;
+			message.channel.sendMessage(returnMessage);
+			if (message.testCallback) message.testCallback(returnMessage);
+		} catch (error) {
+			message.channel.sendMessage(error.ErrorStatus);
+			if (message.testCallback) message.testCallback(error.ErrorStatus);
+		}
 	}
 }
 

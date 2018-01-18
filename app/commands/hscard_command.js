@@ -21,7 +21,7 @@ class HSCardCommand extends AbstractBaseCommand {
      * @param {Object} message A discordjs Message object.  
      * info:  https://discord.js.org/#/docs/main/stable/class/Message
      */
-    do(message) {
+    async do(message) {
         if (!message.content.includes('cardsearch')) {
             let card = super.getParams(message.content, this.name);
             let opts = {
@@ -29,17 +29,17 @@ class HSCardCommand extends AbstractBaseCommand {
                 headers: hscard_headers
             };
             let returnMessage;
-            request(opts)
-            .then( response => {
+            try {
+                let response = await request(opts);
                 let info = JSON.parse(response);
                 returnMessage = info[0].imgGold;
                 message.channel.send(returnMessage);
                 if (message.testCallback) message.testCallback(returnMessage);
-            }).catch( () => {
+            } catch (error) {
                 returnMessage = `Sorry, I can't find that card :(`;
                 message.channel.send(returnMessage);
                 if (message.testCallback) message.testCallback(returnMessage);
-            });
+            }
         }
     }
 }

@@ -8,16 +8,19 @@ class JokeCommand extends AbstractBaseCommand {
 	constructor() {
 		super("joke", false, "dad jokes are awesome.");
 	}
-	do(message) {
-		request({
-			url: "https://icanhazdadjoke.com/",
-			headers: {
-				Accept: "text/plain"
-			}
-		}).then(response => {
+	async do(message) {
+		try {
+			let response = await request({
+				url: "https://icanhazdadjoke.com/",
+				headers: {
+					Accept: "text/plain"
+				}
+			});
 			message.reply(response);
 			if (message.testCallback) message.testCallback(response);
-		});
+		} catch (error) {
+			console.log('An error occurred in the joke command');
+		}
 	}
 }
 

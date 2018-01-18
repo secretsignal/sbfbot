@@ -12,16 +12,19 @@ let _getRandomComic = (message, latestComicNumber) => {
     _getComicByNumber(message, randomNum);
 };
 
-let _getComicByNumber = (message, number) => {
+let _getComicByNumber = async (message, number) => {
     let returnMessage;
-    request({
-        url: `https://xkcd.com/${number}/info.0.json`
-    }).then(response => {
+    try {
+        let response = await request({
+            url: `https://xkcd.com/${number}/info.0.json`
+        });
         let info = JSON.parse(response);
         returnMessage = `#${info.num} \n${info.title}\n${info.img}\n${info.alt}`;
         message.channel.sendMessage(returnMessage);
         if (message.testCallback) message.testCallback(returnMessage);
-    });
+    } catch (error) {
+        console.log(`Error in XKCD command: ${error}`);
+    }
 };
 
 class XKCDCommand extends AbstractBaseCommand {
@@ -29,16 +32,19 @@ class XKCDCommand extends AbstractBaseCommand {
         super("xkcd", false, "fetches a xkcd comic");
     }
 
-    do(message) {
+    async do(message) {
         let params = super.getParams(message.content, this.name);
-        request({
-            url: 'https://xkcd.com/info.0.json'
-        }).then(response => {
+        try {
+            let response = await request({
+                url: 'https://xkcd.com/info.0.json'
+            });
             let info = JSON.parse(response);
             if (params === 'latest') _getComicByNumber(message, info.num)
             else if (parseInt(params)) _getComicByNumber(message, parseInt(params));
             else _getRandomComic(message, info.num);
-        });
+        } catch (error) {
+            console.log('An error occurred in the joke command');
+        }
     }
 }
 

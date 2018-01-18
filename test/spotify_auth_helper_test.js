@@ -8,10 +8,8 @@ const SpotifyAuthHelper = require('../app/helpers/spotify_auth_helper');
 describe('#helper: SpotifyAuthHelper', () => {
     let result;
 
-    before("should fetch an access token", () => {
-        return SpotifyAuthHelper.getAccessToken().then(res => {
-            result = res;
-        });
+    before("should fetch an access token", async () => {
+        result = await SpotifyAuthHelper.getAccessToken();
     });
 
     it('should return an access token', () => {

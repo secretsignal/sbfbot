@@ -18,11 +18,10 @@ describe('#command: spotify:track', () => {
 
 	describe('-with the query "sir duke--stevie wonder"', () => {
 
-		it('should return a URL that matches the expected URL', (done) => {
+		it('should return a URL that matches the expected URL', async () => {
             message.content = `!spotify-track sir duke--stevie wonder`;
             message.testCallback = (result) => {
                 expect(result).to.equal(EXPECTED_RESULT);
-				done();
             };
 			command.do(message);
 		});
@@ -30,11 +29,10 @@ describe('#command: spotify:track', () => {
 
 	describe('-with a query of "blahblahblah--blahblahblah"', () => {
 
-		it('should return error message', (done) => {
+		it('should return error message', async () => {
             message.content = `!spotify-track blahblahblah--blahblahblah`;
             message.testCallback = (result) => {
                 expect(result).to.equal(`Sorry, I can't find that album :(`);
-				done();
             };
 			command.do(message);
 		});
