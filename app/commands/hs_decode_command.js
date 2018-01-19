@@ -2,7 +2,7 @@ let AbstractBaseCommand = require('../abstract_base_command');
 const {
     decode
 } = require("deckstrings");
-const request = require('request');
+const request = require('request-promise');
 const url = 'https://api.hearthstonejson.com/v1/latest/enUS/cards.json';
 const hscard_headers = {
     'Accept': 'application/json'
@@ -65,6 +65,13 @@ const _buildClassName = (heroId) => {
     return heroJson.cardClass[0].toUpperCase() + heroJson.cardClass.substring(1).toLowerCase();
 }
 
+const _fetchHearthstoneJson = () => {
+    let opts = {
+        url: url
+    };
+    return request(opts);
+};
+
 class HSDecodeCommand extends AbstractBaseCommand {
     /**
      * {string} name The Name of this Command
@@ -78,27 +85,20 @@ class HSDecodeCommand extends AbstractBaseCommand {
      * @param {Object} message A discordjs Message object.  
      * info:  https://discord.js.org/#/docs/main/stable/class/Message
      */
-    do(message) {
+    async do(message) {
         let deckString = super.getParams(message.content, this.name); 
-        let opts = {
-            url: url
-        };
         let returnMessage;
-        request(opts, (error, response, body) => {
-            if (!error && response.statusCode === 200) {
-                cardsjson = JSON.parse(body);
-                try {
-                    let decodedDeckString = _decodeDeckString(deckString);
-                    let formattedString = _buildFormattedString(decodedDeckString, deckString);
-                    returnMessage = formattedString;
-                } catch (e) {
-                    returnMessage = `Sorry, I can't decode that deck string :(`;
-                } finally {
-                    message.channel.send(returnMessage);
-                    if (message.testCallback) message.testCallback(returnMessage);
-                }
-            }
-        });
+        try {
+            let response = await _fetchHearthstoneJson();
+            cardsjson = JSON.parse(response);
+            let decodedDeckString = _decodeDeckString(deckString);
+            let formattedString = _buildFormattedString(decodedDeckString, deckString);
+            returnMessage = formattedString;
+            message.channel.send(returnMessage);
+            if (message.testCallback) message.testCallback(returnMessage);
+        } catch (error) {
+            message.channel.send(`Sorry, an error occurred executing that command :(`);   
+        }
     }
 }
 

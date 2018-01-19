@@ -1,6 +1,6 @@
 let AbstractBaseCommand = require('../abstract_base_command');
 
-const request = require('request');
+const request = require('request-promise');
 //const search_url = 'https://www.wastedondestiny.com/api';
 
 /*  this API key is one i created for sbfvgs, keep in mind that we all might be using it at the same time
@@ -25,7 +25,7 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
      * @param {Object} message A discordjs Message object.  
      * info:  https://discord.js.org/#/docs/main/stable/class/Message
      */
-    do(message) {
+    async do(message) {
         let params = super.getParams(message.content, this.name);
         let username = params.match(/\b(?:\W|[0-9])*(\w+)\b/)[0];
         let device = 2;
@@ -41,38 +41,29 @@ class TimeWastedOnDestiny extends AbstractBaseCommand {
         };
 
         let returnMessage;
+        try {
+            let membershipResponse = await request(opts);
+            let membershipInfo = JSON.parse(membershipResponse);
 
-        request(opts, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-                let info = JSON.parse(body);
-                let lookup_resource = `https://www.bungie.net/Platform/Destiny2/${device}/Profile/${info.Response}/?components=200`;
+            if (membershipInfo.Response == "0") throw membershipInfo;
 
-                let opts = {
-                    url: encodeURI(lookup_resource),
-                    headers: headers
-                };
+            lookup_resource = `https://www.bungie.net/Platform/Destiny2/${device}/Profile/${membershipInfo.Response}/?components=200`;
+            opts.url = encodeURI(lookup_resource);
 
-                if (info.Response != "0") {
-                    request(opts, function (error, response, body) {
-                        if (!error && response.statusCode === 200) {
-                            let info = JSON.parse(body);
-                            let totalTime = 0;
-                            let characters = Object.keys(info.Response.characters.data);
-                            characters.forEach(id => {
-                                totalTime += Number(info.Response.characters.data[id].minutesPlayedTotal);
-                            })
-                            returnMessage = `${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 2!`;
-                            message.channel.sendMessage(returnMessage);
-                            if (message.testCallback) message.testCallback(returnMessage);
-                        }
-                    });
-                } else {
-                    message.channel.sendMessage(info.ErrorStatus);
-                    if (message.testCallback) message.testCallback(info.ErrorStatus);
-
-                }
-            }
-        });
+            let profileResponse = await request(opts);
+            let profileInfo = JSON.parse(profileResponse);
+            let totalTime = 0;
+            let characters = Object.keys(profileInfo.Response.characters.data);
+            characters.forEach(id => {
+                totalTime += Number(profileInfo.Response.characters.data[id].minutesPlayedTotal);
+            })
+            returnMessage = `${username} has wasted over ${Math.floor(totalTime * 0.000694444)} days playing destiny 2!`;
+            message.channel.sendMessage(returnMessage);
+            if (message.testCallback) message.testCallback(returnMessage);
+        } catch (error) {
+            message.channel.sendMessage(error.ErrorStatus);
+            if (message.testCallback) message.testCallback(error.ErrorStatus);
+        }
     }
 }
 
