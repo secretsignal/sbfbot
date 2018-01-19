@@ -1,16 +1,13 @@
 const {expect} = require('chai');
 const TimeWastedOnDestiny = require('../app/commands/twod1_legacy');
- 
+const TestHelper = require('./helpers/test_helper');
+
 let command = new TimeWastedOnDestiny();
 
 describe('#command: twod1', () => {
 
     describe('-using argument: "ultimakillz"', () => {
-        let message = {
-            channel: {
-                sendMessage: () => {}
-            }
-        };
+        let message = TestHelper.getMockMessage();
         let result;
 
         // TODO: Revisit this to get before hook working with async/await
@@ -50,11 +47,7 @@ describe('#command: twod1', () => {
     });
     
     describe('-using agruments: "ultimakillz xbox"', () => {
-        let message = {
-            channel: {
-                sendMessage: () => {}
-            }
-        };
+        let message = TestHelper.getMockMessage();
         
 		it('should return a error message', async () => {
             message.content = `!twod1 ultimakillz xbox`;
