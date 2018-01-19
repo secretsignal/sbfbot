@@ -18,7 +18,12 @@ const _searchForAlbum = async (accessToken, message, album) => {
     try {
         let response = await request(opts);
         let res = JSON.parse(response);
-        if (res.albums.items.length < 1) throw 'No results from search';
+        if (res.albums.items.length < 1) {
+            returnMessage = `Sorry, I can't find that album :(`;
+            message.channel.send(returnMessage);
+            if (message.testCallback) message.testCallback(returnMessage);
+            return;
+        }
 
         // Return only the top result
         returnMessage = res.albums.items[0].external_urls.spotify

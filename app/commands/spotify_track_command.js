@@ -19,7 +19,12 @@ const _searchForTrack = async (accessToken, message, query) => {
     let response = await request(opts);
     try {
         let res = JSON.parse(response);
-        if (res.tracks.items.length < 1) throw 'No results from search';
+        if (res.tracks.items.length < 1) {
+            returnMessage = `Sorry, I can't find that track :(`;
+            message.channel.send(returnMessage);
+            if (message.testCallback) message.testCallback(returnMessage);
+            return;
+        }
 
         // Return only the top result
         returnMessage = res.tracks.items[0].album.external_urls.spotify
@@ -27,11 +32,9 @@ const _searchForTrack = async (accessToken, message, query) => {
         message.channel.send(returnMessage);
         if (message.testCallback) message.testCallback(returnMessage);
     } catch (error) {
-        console.log(`Error in album search: ${error}`);
+        console.log(`Error in track search: ${error}`);
         if (error && error.message && error.message.includes('access token expired')) {
             returnMessage = `Sorry, I was unable to contact Spotify. Please try again :(`;
-        } else {
-            returnMessage = `Sorry, I can't find that album :(`;
         }
         
         message.channel.send(returnMessage);
