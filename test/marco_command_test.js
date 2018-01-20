@@ -1,11 +1,8 @@
 const {expect} = require('chai');
 const MarcoCommand = require('../app/commands/marco_command');
+const TestHelper = require('./helpers/test_helper');
 
-let message = {
-	channel: {
-		sendMessage: () => {}
-	}
-}; 
+let message = TestHelper.getMockMessage();
 let command = new MarcoCommand();
 
 describe('#command: marco', () => {
