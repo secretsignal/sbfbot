@@ -10,39 +10,36 @@ let command = new YoutubeCommand();
 
 describe('#command: youtube', () => {
 
-	xdescribe('-with the query "sir duke stevie wonder"', () => {
+	describe('-with the query "sir duke stevie wonder"', () => {
 		let message = TestHelper.getMockMessage();
 
-		it('should return a URL that matches the expected URL', async () => {
+		it('should return a URL that matches the expected URL', TestHelper.mochaAsyncWrapper(async () => {
+            let result;
             message.content = `!youtube sir duke stevie wonder`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(`https://www.youtube.com/watch?v=s6fPN5aQVDI`);
-            };
-			command.do(message);
-		});
+            await command.do(message);
+            expect(message.result).to.equal(`https://www.youtube.com/watch?v=s6fPN5aQVDI`);
+		}));
     });
     
     describe('-with the query "sbfvgs episode 80"', () => {
 		let message = TestHelper.getMockMessage();
 
-		it('should return a URL that matches the expected URL', async () => {
-            message.content = `!youtube sbfvgs episode 80`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(`https://www.youtube.com/watch?v=4mWGRwYaADg`);
-            };
-			command.do(message);
-		});
+		it('should return a URL that matches the expected URL', TestHelper.mochaAsyncWrapper(async () => {
+            let result;
+            message.content = `!youtube sbfvgs episode 80`;            
+            await command.do(message);
+            expect(message.result).to.equal(`https://www.youtube.com/watch?v=4mWGRwYaADg`);
+		}));
     });
 
-	xdescribe('-with a query of "asdfasdfasdasdfasdf123123123"', () => {
+	describe('-with a query of "asdfasdfasdasdfasdf123123123"', () => {
 		let message = TestHelper.getMockMessage();
 		
-		it('should return error message', async () => {
+		it('should return error message', TestHelper.mochaAsyncWrapper(async () => {
+            let result;
             message.content = `!youtube asdfasdfasdasdfasdf123123123`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(`Sorry I didn't find anything :(`);
-            };
-			command.do(message);
-		});
+            await command.do(message);
+            expect(message.result).to.equal(`Sorry I didn't find anything :(`);
+		}));
 	});
 });

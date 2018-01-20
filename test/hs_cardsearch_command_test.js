@@ -13,25 +13,23 @@ describe('#command: hs_cardsearch', () => {
     describe('-with the search term "ysera"', () => {
 		let message = TestHelper.getMockMessage();
 
-		it('should return an array of 3 search results', async () => {
-            message.content = `!cardsearch ysera`;
-            message.testCallback = (result) => {
-                expect(result).to.be.a("array");
-                expect(result.length).to.equal(3);
-            };
-			command.do(message);
-		});
+		it('should return an array of 3 search results', TestHelper.mochaAsyncWrapper(async () => {
+			let result;
+			message.content = `!cardsearch ysera`;
+			await command.do(message);
+			expect(message.result).to.be.a("array");
+			expect(message.result.length).to.equal(3);
+		}));
 	});
 
-	describe('-with a search term that has no results', async () => {
+	describe('-with a search term that has no results', () => {
 		let message = TestHelper.getMockMessage();
 
-		it('should return error message', async () => {
-            message.content = `!cardsearch blahblahblah`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(`Sorry, no results for that card search :(`);
-            };
-			command.do(message);
-		});
+		it('should return error message', TestHelper.mochaAsyncWrapper(async () => {
+			let result;
+			message.content = `!cardsearch blahblahblah`;
+			await command.do(message);
+			expect(message.result).to.equal(`Sorry, no results for that card search :(`);
+		}));
 	});
 });

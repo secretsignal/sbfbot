@@ -15,24 +15,22 @@ describe('#command: hscard', () => {
 	describe('-with a valid card', () => {
 		let message = TestHelper.getMockMessage();
 
-		it('should return a path to card image', async () => {
-            message.content = `!card sylvanas`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(EXAMPLE_RESULT_SYLVANAS);
-            };
-			command.do(message);
-		});
+		it('should return a path to card image', TestHelper.mochaAsyncWrapper(async () => {
+			let result;
+			message.content = `!card sylvanas`;
+			await command.do(message);
+			expect(message.result).to.equal(EXAMPLE_RESULT_SYLVANAS);
+		}));
 	});
 
 	describe('-with an invalid card', () => {
 		let message = TestHelper.getMockMessage();
 		
-		it('should return error message', async () => {
-            message.content = `!card notsylvanas`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(`Sorry, I can't find that card :(`);
-            };
-			command.do(message);
-		});
+		it('should return error message', TestHelper.mochaAsyncWrapper(async () => {
+			let result
+			message.content = `!card notsylvanas`;
+			await command.do(message);
+			expect(message.result).to.equal(`Sorry, I can't find that card :(`);
+		}));
 	});
 });

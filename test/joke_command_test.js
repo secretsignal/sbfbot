@@ -7,11 +7,10 @@ let command = new JokeCommand();
 
 describe('#command: joke', () => {
 
-    it('should return a joke', async () => {
+    it('should return a joke', TestHelper.mochaAsyncWrapper(async () => {
+        let result;
         message.content = '!joke';
-        message.testCallback = (result) => {
-            expect(result).to.not.be.undefined;
-        };
-        command.do(message);
-    });
+        await command.do(message);
+        expect(message.result).to.not.be.undefined;
+    }));
 });

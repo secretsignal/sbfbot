@@ -14,24 +14,22 @@ describe('#command: hs_decode', () => {
 	describe('-with a valid deckstring', () => {
 		let message = TestHelper.getMockMessage();
 
-		it('should decode with expected result', async () => {
+		it('should decode with expected result', TestHelper.mochaAsyncWrapper(async () => {
+			let result;
 			message.content = `!decode ${EXAMPLE_DECKSTRING}`;
-			message.testCallback = (result) => {
-				expect(result).to.equal(EXAMPLE_DECODED_DECKSTRING);
-			};
-			command.do(message);
-		});
+			await command.do(message);
+			expect(message.result).to.equal(EXAMPLE_DECODED_DECKSTRING);
+		}));
 	});
 
 	describe('-with an invalid deckstring', () => {
 		let message = TestHelper.getMockMessage();
 		
-		it('should return an error message', async () => {
+		it('should return an error message', TestHelper.mochaAsyncWrapper(async () => {
+			let result;
 			message.content = `!decode ${EXAMPLE_INVALID_DECKSTRING}`;
-			message.testCallback = (result) => {
-				expect(result).to.equal(`Sorry, I can't decode that deck string :(`);
-			};
-			command.do(message);
-		});
+			await command.do(message);
+			expect(message.result).to.equal(`Sorry, I can't decode that deck string :(`);
+		}));
 	});
 });
