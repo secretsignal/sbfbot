@@ -9,18 +9,6 @@ const hscard_headers = {
 };
 let cardsjson = null;
 
-const _decodeDeckString = (deckString) => {
-    deckString = _checkForLongDeckStringFormat(deckString);
-    return decode(deckString);
-};
-
-const _checkForLongDeckStringFormat = (deckString) => {
-    if (deckString.indexOf('###') !== -1) {
-        throw 'No point in decoding a long form deck string';
-    }
-    return deckString;
-};
-
 const _buildFormattedString = (decodedDeckString, deckString) => {
     let cardList = _buildCardList(decodedDeckString.cards);
     let className = _buildClassName(decodedDeckString.heroes[0]);
@@ -89,15 +77,21 @@ class HSDecodeCommand extends AbstractBaseCommand {
         let deckString = super.getParams(message.content, this.name); 
         let returnMessage;
         try {
+            if (deckString.indexOf('###') !== -1) {
+                throw 'No point in decoding a long form deck string';
+            }
+
             let response = await _fetchHearthstoneJson();
             cardsjson = JSON.parse(response);
-            let decodedDeckString = _decodeDeckString(deckString);
+            let decodedDeckString = decode(deckString);
             let formattedString = _buildFormattedString(decodedDeckString, deckString);
             returnMessage = formattedString;
             message.channel.send(returnMessage);
             if (message.testCallback) message.testCallback(returnMessage);
         } catch (error) {
-            message.channel.send(`Sorry, an error occurred executing that command :(`);   
+            returnMessage = `Sorry, I can't decode that deck string :(`;
+            message.channel.send(returnMessage); 
+            if (message.testCallback) message.testCallback(returnMessage);  
         }
     }
 }
