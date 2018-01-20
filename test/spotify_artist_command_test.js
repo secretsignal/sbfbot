@@ -15,24 +15,22 @@ describe('#command: spotify:artist', () => {
 	describe('-with the query "coheed and cambria"', () => {
 		let message = TestHelper.getMockMessage();
 
-		it('should return a URL that matches the expected URL', async () => {
-            message.content = `!spotify-artist coheed and cambria`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(EXPECTED_RESULT);
-            };
-			command.do(message);
-		});
+		it('should return a URL that matches the expected URL', TestHelper.mochaAsyncWrapper(async () => {
+			let result;
+			message.content = `!spotify-artist coheed and cambria`;
+			await command.do(message);
+			expect(message.result).to.equal(EXPECTED_RESULT);
+		}));
 	});
 
 	describe('-with a query of "notsylvanas"', () => {
 		let message = TestHelper.getMockMessage();
 
-		it('should return error message', async () => {
-            message.content = `!spotify-artist notsylvanas`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(`Sorry, I can't find that artist :(`);
-            };
-			command.do(message);
-		});
+		it('should return error message', TestHelper.mochaAsyncWrapper(async () => {
+			let result;
+			message.content = `!spotify-artist notsylvanas`;
+			await command.do(message);
+			expect(message.result).to.equal(`Sorry, I can't find that artist :(`);
+		}));
 	});
 });

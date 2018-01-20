@@ -15,24 +15,22 @@ describe('#command: spotify:album', () => {
 	describe('-with the query "second stage turbine blade"', () => {
 		let message = TestHelper.getMockMessage();
 
-		it('should return a URL that matches the expected URL', async () => {
-            message.content = `!spotify-album second stage turbine blade`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(EXPECTED_RESULT);
-            };
-			command.do(message);
-		});
+		it('should return a URL that matches the expected URL', TestHelper.mochaAsyncWrapper(async () => {
+			let result;
+			message.content = `!spotify-album second stage turbine blade`;
+			await command.do(message);
+			expect(message.result).to.equal(EXPECTED_RESULT);
+		}));
 	});
 
 	describe('-with a query of "notsylvanas"', () => {
 		let message = TestHelper.getMockMessage();
 		
-		it('should return error message', async () => {
-            message.content = `!spotify-album notsylvanas`;
-            message.testCallback = (result) => {
-                expect(result).to.equal(`Sorry, I can't find that album :(`);
-            };
-			command.do(message);
-		});
+		it('should return error message', TestHelper.mochaAsyncWrapper(async () => {
+			let result;
+			message.content = `!spotify-album notsylvanas`;
+			await command.do(message);
+			expect(message.result).to.equal(`Sorry, I can't find that album :(`);
+		}));
 	});
 });
