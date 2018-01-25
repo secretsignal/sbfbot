@@ -43,7 +43,7 @@ class SpotifyTrackCommand extends AbstractBaseCommand {
             }
         
             // Return only the top result
-            returnMessage = res.tracks.items[0].album.external_urls.spotify
+            returnMessage = res.tracks.items[0].external_urls.spotify;
         
             message.channel.send(returnMessage);
             if (message.testCallback) message.testCallback(returnMessage);
