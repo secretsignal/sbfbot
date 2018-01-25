@@ -6,7 +6,7 @@ const TestHelper = require('./helpers/test_helper');
 
 const SpotifyTrackCommand = require('../app/commands/spotify_track_command');
 
-const EXPECTED_RESULT = 'https://open.spotify.com/album/2HVx2tiZnLX8xeaUthed1e';
+const EXPECTED_RESULT = 'https://open.spotify.com/track/4RQgqR09VmHn345vRhKQ6T';
 
 let command = new SpotifyTrackCommand();
 
