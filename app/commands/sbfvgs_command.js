@@ -29,7 +29,7 @@ class SBFVGSCommand extends AbstractBaseCommand {
             } else {
                 returnMessage = `Sorry, I can't find that SBFVGS episode :(`;
             }
-            message.channel.sendMessage(returnMessage);
+            message.channel.send(returnMessage);
             if (message.testCallback) message.testCallback(returnMessage);
         } catch (error) {
             returnMessage = `Sorry, I can't find that SBFVGS episode :(`;
