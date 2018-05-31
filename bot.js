@@ -52,5 +52,11 @@ bot.on('guildMemberAdd', member => {
   member.guild.defaultChannel.send(`Welcome to the server, ${member}!`);
 });
 
+bot.on('messageReactionAdd', (reaction, user) => {
+  if(reaction.emoji.name === "upvote") {
+      reaction.message.channel.send(`<@${reaction.message.author.id}>++`);
+  }
+});
+
 // log our bot in
 bot.login(TOKEN);
