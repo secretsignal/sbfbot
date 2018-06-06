@@ -54,7 +54,7 @@ bot.on('guildMemberAdd', member => {
 
 bot.on('messageReactionAdd', (reaction, user) => {
   if(reaction.emoji.name === "upvote") {
-      reaction.message.channel.send(`<@${reaction.message.author.id}>++ received an upvote for "_${reaction.message.content}_"`);
+      reaction.message.channel.send(`<@${reaction.message.author.id}>++ received an upvote from <@${user.id}> for "_${reaction.message.content}_"`);
   }
 });
 
