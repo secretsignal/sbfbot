@@ -1,7 +1,8 @@
 let AbstractBaseCommand = require('../abstract_base_command');
 const request = require('request-promise');
 var fs = require("fs");
-var content = fs.readFileSync('./sbfvgs.json');
+let sbfvgsJsonPath = process.env.botenv === "debug" ? './ubot/sbfvgs.json' : './sbfvgs.json';
+var content = fs.readFileSync(sbfvgsJsonPath);
 var jsonContent = JSON.parse(content);
 
 let _getRandomIntInclusive = (min, max) => {
