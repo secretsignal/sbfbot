@@ -1,4 +1,5 @@
 # beep beep boop
+[![Build Status](https://travis-ci.org/cjlaw/sbfbot.svg?branch=master)](https://travis-ci.org/cjlaw/sbfbot)
 
 # local development
 1. npm install
