@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const commandRouter = require('./app/command_router');
 const AbstractBaseCommand = require('./app/abstract_base_command');
+const ReactionHelper = require('./app/helpers/reaction_helper');
 
 const botenv = process.env.ENV || "debug" // the bot's current running environment.
 const http = require('http');
@@ -53,8 +54,11 @@ bot.on('guildMemberAdd', member => {
 });
 
 bot.on('messageReactionAdd', (reaction, user) => {
-	if (reaction.emoji.name === "upvote") {
-		reaction.message.channel.send(`<@${reaction.message.author.id}>++ received an upvote from <@${user.id}> for ${reaction.message.content}`);
+	if (reaction.emoji.name === 'upvote') {
+		reaction.message.channel.send(ReactionHelper.handleUpvoteReaction(reaction, user));
+	}
+	if (reaction.emoji.name === 'twss') {
+		reaction.message.channel.send(ReactionHelper.handleTwssReaction(reaction, user, bot.emojis.find('name', 'twss')));
 	}
 });
 
