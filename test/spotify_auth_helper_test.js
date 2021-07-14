@@ -5,7 +5,7 @@ require('dotenv').config({ path: dotEnvPath});
 
 const SpotifyAuthHelper = require('../app/helpers/spotify_auth_helper');
  
-describe('#helper: SpotifyAuthHelper', () => {
+xdescribe('#helper: SpotifyAuthHelper', () => {
     let result;
 
     before("should fetch an access token", async () => {

@@ -10,7 +10,7 @@ const EXPECTED_RESULT = 'https://open.spotify.com/artist/3utxjLheHaVEd9bPjQRsy8'
 
 let command = new SpotifyArtistCommand();
 
-describe('#command: spotify:artist', () => {
+xdescribe('#command: spotify:artist', () => {
 
 	describe('-with the query "coheed and cambria"', () => {
 		let message = TestHelper.getMockMessage();
