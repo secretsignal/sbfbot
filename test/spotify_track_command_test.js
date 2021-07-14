@@ -10,7 +10,7 @@ const EXPECTED_RESULT = 'https://open.spotify.com/track/4RQgqR09VmHn345vRhKQ6T';
 
 let command = new SpotifyTrackCommand();
 
-describe('#command: spotify:track', () => {
+xdescribe('#command: spotify:track', () => {
 
 	describe('-with the query "sir duke--stevie wonder"', () => {
 		let message = TestHelper.getMockMessage(); 

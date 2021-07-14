@@ -39,6 +39,11 @@ bot.on('message', message => {
 			this.commandRouter.route(message);
 		}
 	}
+
+	if (message.content.includes("arnie") || message.content.includes("arnold")) {
+		message.content += " arnie"; // Make sure "arnie" is present to match the command name
+		this.commandRouter.route(message);
+	}
 });
 
 // the ready event is vital, it means that your bot will only start reacting to information

@@ -12,8 +12,9 @@ class CommandRouter {
         this.guild = client.guilds.get(guild_id); // a static reference to the managed guild object.
         this.commands = [];
 
-        fs.readdir("app/commands", (err, files) => {
-            if (err) console.log(err);
+        let commandsPath = process.env.botenv === "debug" ? "./ubot/app/commands" : "app/commands";
+        fs.readdir(commandsPath, (err, files) => {
+                if (err) console.log(err);
 
             files.forEach(file => {
                 let command = require("./commands/" + file);
