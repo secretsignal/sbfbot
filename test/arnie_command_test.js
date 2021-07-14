@@ -17,6 +17,15 @@ describe('#command: arnie', () => {
         expect(message.result.includes(arnoldEmoji)).to.be.true;
     }));
 
+    it('should respond to a mention of "Arnie"', TestHelper.mochaAsyncWrapper(async () => {
+        let result;
+        message.result = null;
+        message.content = 'something something Arnie';
+        await command.do(message);
+        expect(message.result).to.not.be.undefined;
+        expect(message.result.includes(arnoldEmoji)).to.be.true;
+    }));
+
     it('should respond to a mention of "arnold"', TestHelper.mochaAsyncWrapper(async () => {
         let result;
         message.result = null;
@@ -26,10 +35,27 @@ describe('#command: arnie', () => {
         expect(message.result.includes(arnoldEmoji)).to.be.true;
     }));
 
+    it('should respond to a mention of "Arnold"', TestHelper.mochaAsyncWrapper(async () => {
+        let result;
+        message.result = null;
+        message.content = 'something something Arnold';
+        await command.do(message);
+        expect(message.result).to.not.be.undefined;
+        expect(message.result.includes(arnoldEmoji)).to.be.true;
+    }));
+
     it('should not respond to a mention of "arney"', TestHelper.mochaAsyncWrapper(async () => {
         let result;
         message.result = null;
         message.content = 'something something arney';
+        await command.do(message);
+        expect(message.result).to.be.null;
+    }));
+
+    it('should not respond to a use of arnie emoji', TestHelper.mochaAsyncWrapper(async () => {
+        let result;
+        message.result = null;
+        message.content = 'something something <:sbfvgsArnie:437350773744205844>';
         await command.do(message);
         expect(message.result).to.be.null;
     }));

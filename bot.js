@@ -40,7 +40,7 @@ bot.on('message', message => {
 		}
 	}
 
-	if (message.content.includes("arnie") || message.content.includes("arnold")) {
+	if (message.content.match(/Arnie/i) || message.content.match(/Arnold/i)) {
 		message.content += " arnie"; // Make sure "arnie" is present to match the command name
 		this.commandRouter.route(message);
 	}
