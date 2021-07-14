@@ -9,7 +9,7 @@ const EXAMPLE_DECODED_DECKSTRING = '====================\nClass: Hunter\nFormat:
 
 let command = new HSDecodeCommand();
 
-describe('#command: hs_decode', () => {
+xdescribe('#command: hs_decode', () => {
 
 	describe('-with a valid deckstring', () => {
 		let message = TestHelper.getMockMessage();

@@ -10,7 +10,7 @@ const EXAMPLE_RESULT_SYLVANAS = 'http://media.services.zam.com/v1/media/byName/h
 
 let command = new HSCardCommand();
 
-describe('#command: hscard', () => {
+xdescribe('#command: hscard', () => {
 
 	describe('-with a valid card', () => {
 		let message = TestHelper.getMockMessage();

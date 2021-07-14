@@ -8,7 +8,7 @@ const HSCardSearchCommand = require('../app/commands/hs_cardsearch_command');
 
 let command = new HSCardSearchCommand();
 
-describe('#command: hs_cardsearch', () => {
+xdescribe('#command: hs_cardsearch', () => {
 
     describe('-with the search term "ysera"', () => {
 		let message = TestHelper.getMockMessage();
