@@ -4,7 +4,8 @@ const TestHelper = require('./helpers/test_helper');
 
 let message = TestHelper.getMockMessage();
 let command = new ArnieCommand();
-const arnoldEmoji = '<:sbfvgsArnie:437350773744205844>';
+const arnoldEmojiId = "894993017784643624";
+const arnoldEmoji = `<:sbfvgsArnie:${arnoldEmojiId}>`;
 
 describe('#command: arnie', () => {
 
@@ -55,7 +56,7 @@ describe('#command: arnie', () => {
     it('should not respond to a use of arnie emoji', TestHelper.mochaAsyncWrapper(async () => {
         let result;
         message.result = null;
-        message.content = 'something something <:sbfvgsArnie:437350773744205844>';
+        message.content = `something something ${arnoldEmoji}`;
         await command.do(message);
         expect(message.result).to.be.null;
     }));

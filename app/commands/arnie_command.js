@@ -35,19 +35,20 @@ const ArnieQuotes = [
   'Of course, I`m a terminator',
   'Get your butt to Mars!'
 ];
-const ArnieEmoji = '<:sbfvgsArnie:437350773744205844>';
+const ArnieEmojiId = "894993017784643624";
+const ArnieEmoji = `<:sbfvgsArnie:${ArnieEmojiId}>`;
 
 class ArnieCommand extends AbstractBaseCommand {
     constructor() {
         super("arnie", false, "responds to mentions of arnie with an arnie quote");
     }
-    // do(message) {
-    //   if ((message.content.match(/Arnie/i) || message.content.match(/Arnold/i)) && !message.content.includes("437350773744205844")) {
-    //     let returnMessage = `${ArnieQuotes[Math.floor((Math.random()*ArnieQuotes.length))]} ${ArnieEmoji}`;
-    //     message.channel.sendMessage(returnMessage);
-    //     if (message.testCallback) message.testCallback(returnMessage);
-    //   }
-    // }
+    do(message) {
+      if ((message.content.match(/Arnie/i) || message.content.match(/Arnold/i)) && !message.content.includes(ArnieEmojiId)) {
+        let returnMessage = `${ArnieQuotes[Math.floor((Math.random()*ArnieQuotes.length))]} ${ArnieEmoji}`;
+        message.channel.sendMessage(returnMessage);
+        if (message.testCallback) message.testCallback(returnMessage);
+      }
+    }
 }
 
 module.exports = ArnieCommand;
